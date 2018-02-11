@@ -1,0 +1,130 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: ToGrow.Api
+  description: Api para el control de riego automatico utilizando Raspberry y Arduino 
+basePath: /api/v1
+tags:
+  - name: Examples
+    description: Simple example endpoints
+  - name: Specification
+    description: The swagger API specification
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  ExampleBody:
+    type: object
+    title: example
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: The example name
+  TemperaturaBody:
+      type: object
+      title: Temperatura
+      required:
+        - IdDispositivo
+        - fechaLectura
+        - valorTemperatura
+      properties:
+          idDispositivo:
+            type: string
+            description: El UUID del dispositivo 
+          fechaLectura:
+            type: string 
+            description: El timestamp de cuando fue realizada la medición
+          valorTemperatura:
+            type: integer
+            description: El valor de temperatura registrado por el sensor.
+paths:
+  /examples:
+    get:
+      tags:
+        - Examples
+      description: Fetch all examples
+      responses:
+        200:
+          description: Returns all examples
+    post:
+      tags:
+        - Examples
+      description: Create a new example
+      parameters:
+        - name: example
+          in: body
+          description: number of items to skip
+          required: true
+          schema: 
+            $ref: "#/definitions/ExampleBody"
+      responses:
+        200:
+          description: Returns all examples
+
+  /examples/{id}:
+    get:
+      tags:
+        - Examples
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the entity to retrieve
+          type: integer
+      responses:
+        200:
+          description: Return the example with the specified id
+        404:
+          description: Example not 
+
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
+
+  /temperatura:
+    get:
+      tags:
+          - Temperatura
+      description: Retorna todos los datos de temperatura almacenados para el día actual 
+      responses:
+        200:
+          description: Retorna los datos indicados.
+    post:
+      tags:
+        - Temperatura
+      description: Crea un registro de temperatura 
+      parameters:
+        - name: Temperatura
+          in: body
+          description: EL registro automatico de la temperatura
+          required: true
+          schema: 
+            $ref: "#/definitions/TemperaturaBody"
+      responses:
+        200:
+          description: Returns all examples
+
+  /temperatura/{id}:
+    get:
+      tags:
+        - Temperatura
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del registro a retornar 
+          type: integer
+      responses:
+        200:
+          description: Retorna el dato con el respectivo ID 
+        404:
+          description: No se encontró el dato solicitado 
